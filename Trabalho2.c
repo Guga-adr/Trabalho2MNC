@@ -398,6 +398,31 @@ float ajustePolinomial(int n, int grauDesejado, float tabela[][2], float vetorA[
     return 0;
 }
 
+void ajusteExponencial(int n, float tabela[][2], float *a, float *b, float vetorY[], float *coefDeterminacao) {
+    // Inicia variáveis necessárias para o cálculo
+
+    float somaX = 0, somaX2 = 0, somaY = 0, somaXY = 0;
+    float a0 = 0, a1 = 0;
+
+    // Calcular os somatórios necessários para a resolução do sistema
+
+    for (int i = 0; i < n; i++) {
+        somaX += tabela[i][0];
+        somaX2 += pow(tabela[i][0], 2);
+        somaY += log(tabela[i][1]);
+        somaXY += tabela[i][0] * log(tabela[i][1]);
+    }
+    printf("somaX = %.4f\nsomaX2 = %.4f\nsomaY = %.4f\nsomaXY = %.4f\n", somaX, somaX2, somaY, somaXY);
+
+    // Calcula o valor de a0 e a1
+
+    a1 = (n * somaXY - somaX * somaY) / (n * somaX2 - pow(somaX, 2));
+    a0 = (somaY - a1 * somaX) / n;
+    printf("a0 = %.4f\na1 = %.4f\n", a0, a1);
+    *a = exp(a0);
+    *b = exp(a1);
+}
+
 int main() {
 
     int exit = 0;
@@ -520,7 +545,20 @@ int main() {
 
                 break;
             case 6:;
+                nPontosTabelados = 0;
+                printf("Digite o numero de pontos tabelados: ");
+                scanf("%d", &nPontosTabelados);
 
+                printf("Digite os pontos tabelados (X e depois Y):\n");
+                for (int i = 0; i < nPontosTabelados; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        scanf("%f", &tabelaPontos[i][j]);
+                    }
+                }
+
+                float a, b;
+                ajusteExponencial(nPontosTabelados, tabelaPontos, &a, &b, vetorY, &coefDeterminacao);
+                printf("Equação exponencial: y = %.4f * %.4f^x\n", a, b);
                 break;
             case 7:
                 exit = 1;
