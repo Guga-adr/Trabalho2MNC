@@ -1,3 +1,8 @@
+// Autores
+// Gustavo Amaral Duarte Rego
+// Natan Mendes Alcantara
+// Vinicius Person de Oliveira
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -228,7 +233,7 @@ int convergenciaAKMaior(int ordem, float matriz[MAX][MAX]) {
 
             // teste:
             printf("\nNao converge\n");
-            return 0; // não converge
+            return 0; // nao converge
         }
     }
     // teste:
