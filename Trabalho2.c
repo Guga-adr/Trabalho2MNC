@@ -209,11 +209,6 @@ void SistemaTriangularInferior(int ordem, float coeficientes[MAX][MAX], float ve
 
 void SistemaTriangularSuperior(int ordem, float coeficientes[MAX][MAX], float vetorIndSup[], float *vetorSolSup) {
     vetorSolSup[ordem - 1] = vetorIndSup[ordem - 1] / coeficientes[ordem - 1][ordem - 1];
-    // Mostrar o vetor Independente
-    printf("\nVetor Independente: \n");
-    for (int i = 0; i < ordem; i++) {
-        printf("%.4lf\n", vetorIndSup[i]);
-    }
 
     for (int i = ordem - 2; i >= 0; i--) {
         float soma = 0;
@@ -227,7 +222,6 @@ void SistemaTriangularSuperior(int ordem, float coeficientes[MAX][MAX], float ve
 int convergenciaAKMaior(int ordem, float matriz[MAX][MAX]) {
     for (int i = 1; i <= ordem; i++) {
         // teste
-        printf("Determinante A K=%d: %.4f", i, determinante(i, matriz));
 
         if (determinante(i, matriz) <= 0) { // se devolver 0
 
@@ -242,15 +236,6 @@ int convergenciaAKMaior(int ordem, float matriz[MAX][MAX]) {
 }
 
 void auxCholesky(int ordem, float matriz[MAX][MAX], float matrizCholesky[MAX][MAX]) {
-
-    printf("\nMatriz\n");
-
-    for (int i = 0; i < ordem; i++) {
-        for (int j = 0; j < ordem; j++) {
-            printf("%.4f ", matriz[i][j]);
-        }
-        printf("\n");
-    }
 
     for (int i = 0; i < ordem; i++) {
         for (int j = 0; j < ordem; j++) {
@@ -399,7 +384,6 @@ void ajusteExponencial(int n, float tabela[][2], float *a, float *b, float vetor
         somaY += log(tabela[i][1]);
         somaXY += tabela[i][0] * log(tabela[i][1]);
     }
-    printf("somaX = %.4f\nsomaX2 = %.4f\nsomaY = %.4f\nsomaXY = %.4f\n", somaX, somaX2, somaY, somaXY);
 
     // Calcula o valor de a0 e a1
 
