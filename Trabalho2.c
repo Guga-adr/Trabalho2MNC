@@ -18,7 +18,7 @@ float determinante(int ordem, float matriz[MAX][MAX]) {
         int submatrizLinha = 0;
         int submatrizColuna = 0;
 
-        // Criação da matriz cofatora
+        // Criacao da matriz cofatora
         for (int linha = 1; linha < ordem; linha++) {
             for (int coluna = 0; coluna < ordem; coluna++) {
                 if (coluna != i) {
@@ -253,29 +253,13 @@ void auxCholesky(int ordem, float matriz[MAX][MAX], float matrizCholesky[MAX][MA
             if (i == j) {
                 if (i == 0) {
                     matrizCholesky[i][j] = sqrt((double)matriz[i][j]);
-                    /* if (isnan(matrizCholesky[i][j]) || isfinite(matrizCholesky[i][j]) == 0) {
-                        printf("DEU RUIM, na iteração [%d][%d]\n", i, j);
-                        exit(1);
-                    } */
-                    // printf("\nmatrizDiagonalPrincipal[%d][%d] = %f\n", i, j, matriz[i][j]);
                 } else {
                     float soma = 0;
 
                     for (int k = 0; k < i; k++) {
                         soma += pow((double)matrizCholesky[i][k], 2);
-                        if (isnan(matrizCholesky[i][j]) || isfinite(matrizCholesky[i][j]) == 0) {
-                            printf("DEU RUIM, na iteração [%d][%d]\n", i, j);
-                            exit(1);
-                        }
-                        printf("\nmatrizForaDiagonal[%d][%d] = %f\n", i, j, matriz[i][j]);
                     }
                     matrizCholesky[i][j] = sqrt((double)matriz[i][j] - soma);
-                    // Checa nan or infinity
-                    /* if (isnan(matrizCholesky[i][j]) || isfinite(matrizCholesky[i][j]) == 0) {
-                        printf("DEU RUIM, na iteração [%d][%d]\n", i, j);
-                        exit(1);
-                    } */
-                    // printf("\nmatriz[%d][%d] = %f\n", i, j, matriz[i][j]);
                 }
             } else {
                 // calcular os elementos fora da diagonal principal
@@ -300,16 +284,9 @@ void Cholesky(int ordem, float coeficientes[MAX][MAX], float vetorIndCholesky[],
     float matrizL[MAX][MAX];
 
     // Verifica convergência do método
-    /* if (convergenciaAKMaior(ordem, coeficientes) == 0) {
+    if (convergenciaAKMaior(ordem, coeficientes) == 0) {
         printf("O sistema nao converge!\n");
         return;
-    } */
-    printf("Matriz L (antes aux): \n");
-    for (int i = 0; i < ordem; i++) {
-        for (int j = 0; j < ordem; j++) {
-            printf("%.4f ", matrizL[i][j]);
-        }
-        printf("\n");
     }
     auxCholesky(ordem, coeficientes, matrizL);
     printf("Matriz L: \n");
@@ -319,7 +296,7 @@ void Cholesky(int ordem, float coeficientes[MAX][MAX], float vetorIndCholesky[],
         }
         printf("\n");
     }
-    // Resolvendo o sistema Ly = b utilizando a função de matriz triangular inferior
+    // Resolvendo o sistema Ly = b utilizando a funcao de matriz triangular inferior
     float vetorY[MAX];
     SistemaTriangularInferior(ordem, matrizL, vetorIndCholesky, vetorY);
     // Fazer a matriz transposta de L
@@ -329,13 +306,13 @@ void Cholesky(int ordem, float coeficientes[MAX][MAX], float vetorIndCholesky[],
             matrizLT[i][j] = matrizL[j][i];
         }
     }
-    // Resolvendo o sistema L^t x = y utilizando a função de matriz triangular superior
+    // Resolvendo o sistema L^t x = y utilizando a funcao de matriz triangular superior
     SistemaTriangularSuperior(ordem, matrizLT, vetorY, vetorSolCholesky);
 }
 
 float ajustePolinomial(int n, int grauDesejado, float tabela[][2], float vetorA[], float vetorY[], float *coefDeterminacao) {
 
-    // Inicia a Matriz de Mínimos Quadrados
+    // Inicia a Matriz de Minimos Quadrados
 
     float matrizMinimos[MAX][MAX];
     for (int i = 0; i < grauDesejado + 1; i++) {
@@ -344,7 +321,7 @@ float ajustePolinomial(int n, int grauDesejado, float tabela[][2], float vetorA[
         }
     }
 
-    // calcular os somatórios necessários para a resolução do sistema
+    // calcular os somatórios necessários para a resolucao do sistema
 
     for (int i = 0; i < grauDesejado + 1; i++) {
         for (int j = 0; j < grauDesejado + 1; j++) {
@@ -354,16 +331,16 @@ float ajustePolinomial(int n, int grauDesejado, float tabela[][2], float vetorA[
         }
     }
 
-    // Monta um vetor Identidade como resolução da matriz (somatórios X*Y) e atribiu-los ao vetorMinimos
+    // Monta um vetor Identidade como resolucao da matriz (somatórios X*Y) e atribiu-los ao vetorMinimos
     float vetorMinimos[MAX];
-
-    for (int i = 0; i < grauDesejado + 1; i++) {
-        for (int j = 0; j < n; j++) {
+    for (int i = 0; i < n + 1; i++) {
+        vetorMinimos[i] = 0;
+        for (int j = 0; j < n + 1; j++) {
             vetorMinimos[i] += pow(tabela[j][0], i) * tabela[j][1];
         }
     }
 
-    printf("\nMatriz de Mínimos Quadrados:\n");
+    printf("\nMatriz de Minimos Quadrados:\n");
 
     for (int i = 0; i < grauDesejado + 1; i++) {
         for (int j = 0; j < grauDesejado + 1; j++) {
@@ -372,26 +349,31 @@ float ajustePolinomial(int n, int grauDesejado, float tabela[][2], float vetorA[
         printf("\n");
     }
 
-    printf("\nVetor de Mínimos Quadrados:\n");
+    printf("\nVetor de Minimos Quadrados:\n");
 
     for (int i = 0; i < grauDesejado + 1; i++) {
         printf("%.4f ", vetorMinimos[i]);
     }
     printf("\n");
 
-    // Resolve o sistema de Mínimos Quadrados por Cholesky e atribiu à vetorA
+    // Resolve o sistema de Minimos Quadrados por Cholesky e atribiu à vetorA
 
     Cholesky(grauDesejado + 1, matrizMinimos, vetorMinimos, vetorA);
 
     // Calcula o vetorY
+    printf("Vetor A: \n");
 
+    for (int i = 0; i < grauDesejado + 1; i++) {
+        printf("%.4f ", vetorA[i]);
+    }
     for (int i = 0; i < n; i++) {
+        vetorY[i] = 0;
         for (int j = 0; j < grauDesejado + 1; j++) {
             vetorY[i] += vetorA[j] * pow(tabela[i][0], j);
         }
     }
 
-    // Calcula o coeficiente de determinação usando a função coefDeterminacao
+    // Calcula o coeficiente de determinacao usando a funcao coefDeterminacao
 
     *coefDeterminacao = coefDet(n, tabela, vetorY);
 
@@ -404,7 +386,7 @@ void ajusteExponencial(int n, float tabela[][2], float *a, float *b, float vetor
     float somaX = 0, somaX2 = 0, somaY = 0, somaXY = 0;
     float a0 = 0, a1 = 0;
 
-    // Calcular os somatórios necessários para a resolução do sistema
+    // Calcular os somatórios necessários para a resolucao do sistema
 
     for (int i = 0; i < n; i++) {
         somaX += tabela[i][0];
@@ -427,13 +409,13 @@ int main() {
 
     int exit = 0;
     int nPontosTabelados;
-    float tabelaPontos[MAX][2];
+    float tabelaPontos[MAX][2], vetorY[MAX];
     do {
 
         printf("Digite o metodo de resolucao desejado: \n");
         printf("1 - Rotina Newton\n");
         printf("2 - Rotina Newton-Gregory\n");
-        printf("3 - Rotina Coeficiente de Determinação\n");
+        printf("3 - Rotina Coeficiente de Determinacao\n");
         printf("4 - Rotina Ajuste da Reta\n");
         printf("5 - Rotina Ajuste Polinomial\n");
         printf("6 - Rotina Ajuste Exponencial\n");
@@ -482,7 +464,7 @@ int main() {
                 break;
             case 4:;
                 nPontosTabelados = 0;
-                float a0, a1, vetorY[MAX];
+                float a0, a1;
                 float coefDeterminacao = 0;
                 printf("Digite o numero de pontos tabelados: ");
                 scanf("%d", &nPontosTabelados);
@@ -497,8 +479,8 @@ int main() {
                 char sinal = '+';
                 if (a1 < 0)
                     sinal = '-';
-                printf("Equação da reta: y = %.4f %c %.4f*X\n", a0, sinal, fabs(a1));
-                printf("Coeficiente de determinação: %.4f\n\n", coefDeterminacao);
+                printf("Equacao da reta: y = %.4f %c %.4f*X\n", a0, sinal, fabs(a1));
+                printf("Coeficiente de determinacao: %.4f\n\n", coefDeterminacao);
 
                 break;
             case 5:;
@@ -523,7 +505,7 @@ int main() {
                 for (int i = 0; i < grauDesejado + 1; i++) {
                     printf("%.4f ", vetorA[i]);
                 }
-                printf("\nEquação do polinômio: ");
+                printf("\nEquacao do polinomio: ");
                 for (int i = grauDesejado; i >= 0; i--) {
                     char sinal = '+';
                     if (vetorA[i] < 0)
@@ -531,7 +513,7 @@ int main() {
                     if (i == 0)
                         printf("%.4f\n", vetorA[i]);
                     else
-                        printf("%.4f*X^%d %c ", vetorA[i], i, sinal);
+                        printf("%.4f*X^%d %c ", fabs(vetorA[i]), i, sinal);
                 }
 
                 printf("Vetor Y: \n\n");
@@ -558,7 +540,7 @@ int main() {
 
                 float a, b;
                 ajusteExponencial(nPontosTabelados, tabelaPontos, &a, &b, vetorY, &coefDeterminacao);
-                printf("Equação exponencial: y = %.4f * %.4f^x\n", a, b);
+                printf("Equacao exponencial: y = %.4f * %.4f^x\n", a, b);
                 break;
             case 7:
                 exit = 1;
